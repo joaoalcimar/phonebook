@@ -3,7 +3,7 @@ import 'package:phonebook/ui/contact_page.dart';
 import 'ui/home_page.dart';
 
 void main() {
-  runApp(MaterialApp(home: ContactPage(),
+  runApp(MaterialApp(home: HomePage(),
   debugShowCheckedModeBanner: false,));
 }
 

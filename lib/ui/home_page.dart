@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:phonebook/helpers/contact_helper.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                           image: contacts[index].img != null
                               ? FileImage(File(contacts[index].img as String))
                               : AssetImage(
-                              "images/persona.png") as ImageProvider),
+                              "lib/images/persona.jpeg") as ImageProvider),
                     ),
                   ),
                   Padding(padding: EdgeInsets.only(left: 10.0),
