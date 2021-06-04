@@ -1,0 +1,42 @@
+import 'package:flutter/material.dart';
+import 'package:phonebook/helpers/contact_helper.dart';
+
+class ContactPage extends StatefulWidget {
+  final Contact? contact;
+
+  ContactPage({this.contact});
+
+  @override
+  _ContactPageState createState() => _ContactPageState();
+}
+
+class _ContactPageState extends State<ContactPage> {
+  Contact? _editedContact;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.contact == null) {
+      _editedContact = Contact();
+    } else {
+      _editedContact = Contact.fromMap(widget.contact!.toMap());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.lightGreen,
+        title: Text(_editedContact!.name ?? "Novo contato"),
+        centerTitle: true,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){},
+        child: Icon(Icons.save),
+        backgroundColor: Colors.lightGreen,
+      ),
+    );
+  }
+}
