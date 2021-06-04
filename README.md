@@ -1,6 +1,6 @@
 # phonebook
 
-A new Flutter project.
+A phonebook app :)
 
 ## Getting Started
 
