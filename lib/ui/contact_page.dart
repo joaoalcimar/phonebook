@@ -18,6 +18,8 @@ class _ContactPageState extends State<ContactPage> {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
 
+  final _nameFocus = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -35,14 +37,20 @@ class _ContactPageState extends State<ContactPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(child: Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightGreen,
         title: Text(_editedContact.name ?? "Novo contato"),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          if(_editedContact.name != null && _editedContact.name.isNotEmpty){
+            Navigator.pop(context, _editedContact);
+          } else {
+            FocusScope.of(context).requestFocus(_nameFocus);
+          }
+        },
         child: Icon(Icons.save),
         backgroundColor: Colors.lightGreen,
       ),
@@ -52,19 +60,20 @@ class _ContactPageState extends State<ContactPage> {
             children: <Widget>[
               GestureDetector(
                   child: Container(
-                width: 140.0,
-                height: 140.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: _editedContact.img != null
-                          ? FileImage(File(_editedContact.img as String))
-                          : AssetImage("lib/images/persona.jpeg")
-                              as ImageProvider),
-                ),
-              )),
+                    width: 140.0,
+                    height: 140.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: _editedContact.img != null
+                              ? FileImage(File(_editedContact.img as String))
+                              : AssetImage("lib/images/persona.jpeg")
+                          as ImageProvider),
+                    ),
+                  )),
               TextField(
                 controller: _nameController,
+                focusNode: _nameFocus,
                 decoration: InputDecoration(labelText: "Nome"),
                 onChanged: (text){
                   _userEdited = true;
@@ -93,6 +102,31 @@ class _ContactPageState extends State<ContactPage> {
               ),
             ],
           )),
-    );
+    ), onWillPop: () => _requestPop());
   }
+
+  _requestPop(){
+    if(_userEdited){
+      showDialog(context: context, builder: (context){
+        return AlertDialog(
+          title: Text("Tem certeza que deseja descartar alterações?"),
+          content: Text("Se sair as alterações serão perdidas"),
+          actions: <Widget>[
+            FlatButton(onPressed: (){
+              Navigator.pop(context);
+              Navigator.pop(context);
+            }, child: Text("Sim")),
+            FlatButton(onPressed: (){
+              Navigator.pop(context);
+            }, child: Text("Cancelar"),)
+          ],
+        );
+      });
+      return Future.value(false);
+    }else{
+      return Future.value(true);
+    }
+
+  }
+
 }
